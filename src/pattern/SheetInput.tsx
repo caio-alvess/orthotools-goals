@@ -10,12 +10,14 @@ import {useToast} from "@/components/ui/use-toast";
 const CobTable = React.lazy(() => import("@/components/CobTable"));
 
 function SheetInput() {
+	const [isSubmiting, setIsSubtmiting] = useState(false);
 	const [sheetFile, setSheetFile] = useState<Blob>();
 	const [monthData, setMonthData] = useState<string>();
 	const [patients, setPatients] = useState<CobType | null>(null);
 	const {toast} = useToast();
 
 	const setError = (errorMessage: string) => {
+		setIsSubtmiting(false);
 		return toast({
 			title: "Erro",
 			description: errorMessage,
@@ -34,6 +36,7 @@ function SheetInput() {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setIsSubtmiting(true);
 
 		if (!sheetFile) {
 			setError("Por favor, selecione uma planilha válida");
@@ -58,6 +61,7 @@ function SheetInput() {
 			if (rawRes.ok) {
 				const jsonRes = await rawRes.json();
 				setPatients(jsonRes.data);
+				setIsSubtmiting(false);
 			} else {
 				if (rawRes.status == 400) throw new Error("Planilha ou mês inválido");
 				if (rawRes.status == 500)
@@ -80,7 +84,7 @@ function SheetInput() {
 					variant={"default"}
 					type="submit"
 					className="mb-4"
-					// disabled={!sheetFile}
+					disabled={isSubmiting}
 				>
 					Enviar planilha
 				</Button>

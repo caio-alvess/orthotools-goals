@@ -1,6 +1,7 @@
 {
 	"name": "orthotools-goal",
 	"version": "0.1.0",
+	"author": "Caio Alves",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",

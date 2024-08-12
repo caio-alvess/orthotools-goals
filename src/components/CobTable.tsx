@@ -12,8 +12,6 @@ import {
 
 import getObjectKeys from "@/utils/getObjectKeys";
 import numberFormatter from "@/utils/numberFormatter";
-import {Suspense} from "react";
-import LoadingSkeleton from "./LoadingSkeleton";
 
 const generateRows = (cobTypes: CobType) => {
 	const cobList = getObjectKeys(cobTypes);
@@ -35,59 +33,17 @@ const generateRows = (cobTypes: CobType) => {
 	return result;
 };
 
-interface ICobTable {
-	monthData: string | undefined;
-	sheetFile: Blob | undefined;
-}
-
-const getCobTableJson = async (monthData: string, sheetFile: Blob) => {
-	const url = "/api/xlsx";
-
-	const fd = new FormData();
-	fd.append("xlsx", sheetFile);
-	fd.append("month", monthData);
-
-	const rawRes = await fetch(url, {
-		method: "post",
-		body: fd,
-	});
-	const jsonRes = (await rawRes.json()) as CobType;
-	return jsonRes;
-};
-
-/* async function CobTable2({monthData, sheetFile}: ICobTable) {
-	if (!monthData || !sheetFile) return null;
-
-	// const cobTypes = await getCobTableJson(monthData, sheetFile);
-
-	return (
-		<Suspense fallback={<LoadingSkeleton />}>
-			<div className="w-3/4 mx-auto mb-8">
-				<Table>
-					<TableCaption className="text-red-700">
-						*ferramenta em fase beta.
-					</TableCaption>
-					<TableHeader>
-						<TableRow className="[&>*]:text-center [&>*]:text-slate-700">
-							<TableHead>Tipo</TableHead>
-							<TableHead>Quantidade</TableHead>
-							<TableHead>Total (R$)</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>{generateRows(cobTypes)}</TableBody>
-				</Table>
-			</div>
-		</Suspense>
-	);
-} */
-
 function CobTable({cobTypes}: {cobTypes: CobType | null}) {
 	if (!cobTypes) return null;
 	return (
-		<div className="w-3/4 mx-auto mb-8">
+		<div className="w-3/4 mx-auto mb-4 ">
 			<Table>
-				<TableCaption className="text-red-700">
-					*ferramenta em fase beta.
+				<TableCaption className="text-slate-600">
+					Confira se o mês está correto.
+					<br />
+					<span className="text-slate-400">
+						Essa ferramenta está em fase beta
+					</span>
 				</TableCaption>
 				<TableHeader>
 					<TableRow className="[&>*]:text-center [&>*]:text-slate-700">

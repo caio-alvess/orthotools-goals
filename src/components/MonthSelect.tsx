@@ -1,4 +1,6 @@
-import {SetStateAction} from "react";
+"use client";
+
+import {SetStateAction, useState} from "react";
 import {Label} from "./ui/label";
 import numberFormatter from "@/utils/numberFormatter";
 
@@ -6,12 +8,19 @@ interface IMonthSelect {
 	monthData: React.Dispatch<SetStateAction<string | undefined>>;
 }
 
-function MonthSelect({monthData}: IMonthSelect) {
-	if (!monthData) return null;
-
+const getDefaultMonth = () => {
 	const date = new Date();
 	const defaultMonth = numberFormatter(date.getMonth() + 1, "string");
 	const defaultYear = date.getFullYear();
+
+	return `${defaultYear}-${defaultMonth}`;
+};
+
+function MonthSelect({monthData}: IMonthSelect) {
+	const [defaultMonth, setDefaultMonth] = useState(getDefaultMonth());
+	monthData(defaultMonth);
+
+	if (!monthData) return null;
 
 	return (
 		<>
@@ -26,8 +35,11 @@ function MonthSelect({monthData}: IMonthSelect) {
 				<input
 					type="month"
 					className="mt-2 mb-6 border-slate-200 border p-2 rounded-md"
-					value={`${defaultYear}-${defaultMonth}`}
-					onChange={(e) => monthData(e.currentTarget.value)}
+					value={defaultMonth}
+					onChange={(e) => {
+						setDefaultMonth(e.currentTarget.value);
+						monthData(e.currentTarget.value);
+					}}
 				/>
 			</div>
 		</>
