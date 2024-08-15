@@ -65,6 +65,7 @@ const verifyVencimento = (
 
 const filterSheet = (patients: Patient[], config: FilterConfig) => {
 	const filteredSheet = patients.filter((patient) => {
+		if (!patient.Recebimento) return false;
 
 		if (config.special?.prevOnly) {
 			return compareDates(patient.Vencimento, patient.Recebimento)
