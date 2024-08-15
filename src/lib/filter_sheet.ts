@@ -65,18 +65,16 @@ const verifyVencimento = (
 
 const filterSheet = (patients: Patient[], config: FilterConfig) => {
 	const filteredSheet = patients.filter((patient) => {
-		// 1. É pago
-		if (!patient.Recebimento || !patient.Recebido) return false;
 
 		if (config.special?.prevOnly) {
 			return compareDates(patient.Vencimento, patient.Recebimento)
 				.isGreaterOrEqual;
 		}
 
-		// 2. É o tipo de mensalidade que o user escolheu
+		// 1. É o tipo de mensalidade que o user escolheu
 		if (!allowedTypes(config.include).includes(patient.Tipo)) return false;
 
-		// 3. Mes recebimento maior que mês limite
+		// 2. Mes recebimento maior que mês limite
 		if (
 			compareDates(patient.Recebimento, config.maxRecebimentoDate).isGreater
 		) {
