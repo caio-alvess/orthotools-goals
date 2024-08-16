@@ -6,7 +6,7 @@ import {Toaster} from "@/components/ui/toaster";
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-	title: "Orthopride tools",
+	title: "Orthotools - Daily Report",
 	description:
 		"Ferramenta exclusiva para funcionários da Orthopride. Criada por Caio Alves",
 	authors: {name: "Caio Alves"},
